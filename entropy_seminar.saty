@@ -93,6 +93,49 @@ document (|
         0 \le y \le \log n
       }で面積 ${\log n}の長方形を置く（青）。ここで、${y=\log x} に対して ${\paren{n, \log n}} を通る接線（紫）を引く。この接線で長方形を切ってできた三角形を、 ${\paren{n, \log n}} 中心に180度回転させて上にくっつけることでできる台形の面積もこれまた面積 ${\log n}である。グラフの凸性より、${y=\log x}のグラフと${x}軸と縦線とが囲む面積は台形の面積よりわずかに小さいことがわかり、${\log n}をわずかに下回ることがわかる。ということで、${k=2}から${k=n}まで${\log k}を足し合わせることで得られる${\log n\!}は、${\int_{1.5}^{n+\frac{1}{2} }\log x \mathrm{d}x = \paren{n+\frac{1}{2}}\app{\log}{n+\frac{1}{2}} - \paren{n+\frac{1}{2}} - 1.5\log 1.5 + 1.5} よりわずかに大きい。とりあえず ${c = -\frac{1}{2}-1.5\log 1.5+1.5 \approx 0.3918}としておくと、${\log n\! \approx \paren{n+\frac{1}{2}}\paren{\log n + \app{\log}{1+\frac{1}{2n}} }- n+ c \approx \paren{n+\frac{1}{2}}\paren{\log n + \frac{1}{2n} }- n+ c } ということで、${\log n\!} はだいたい ${n \log n - n + \frac{1}{2} \log n + \paren{\frac{1}{2} + c}} であることが分かる。
     }
+    +subsection{おまけ} <
+      +pn{
+        ところで、「わずかに小さい」でわずかに発生した誤差が積もり積もってどれくらいの大きさになるのかというのは気になるところである。図より、誤差はかなり小さそうだという直感はあるが。
+      }
+      +pn{
+        図にあるかなり小さい誤差の面積を ${\app{g}{n}}と置く。定義より${\log n = \app{g}{n} + \int _{n-1/2}^{n+1/2}\log x dx} である。
+      }
+      +pn{
+        これをすごく整理すると ${
+          \app{g}{n} = - n\app{\ln}{\frac{1+\frac{1}{2n}}{1-\frac{1}{2n}} }-\frac{1}{2}\app{\ln}{1-\frac{1}{4n^{2}}}+1
+        } と書けて、${\app{\ln}{1+x}}の級数展開でバラしてやるとこれは
+      }
+      +math(${
+          \sum _{k=1}^{\infty}\frac{
+            \paren{4n^{2}}^{-k}}{2k\paren{2k+1}
+          } = \frac{1}{2\cdot 3\cdot 4^1 n^2} 
+            + \frac{1}{4\cdot 5 \cdot 4^2 n^4} 
+            + \frac{1}{6\cdot 7 \cdot 4^3 n^6} + \cdots
+      });
+      +pn{
+        といったふうになり、減衰は${n^{-2}}の速さで起こりそうだとみえる。
+        級数展開に頼ると
+        ${x^2\app{g}{x}}が${x\ge 1}で単調減少である
+%        ことがどうせ高校範囲で示せて\footnote{
+%          実際にやってみると、${
+%            \paren{x^2\app{g}{x}}' = -x\paren{
+%              -3+3x\app{\ln}{\frac{2x+1}{2x-1}}+\app{\ln}{1-\frac{1}{4x^{2}}}
+%            }
+%          }
+%        }、
+        ような気がするので、${x\ge 2}において ${\app{g}{x} \le \frac{4\app{g}{2}}{x^2}}
+      }
+      +pn{
+        ということで、${0 \le \log k - \int _{k-1/2}^{k+1/2}\log x dx \le \frac{4\app{g}{2}}{k^2}} を足し合わせることで
+      }
+      +math(${
+        0 \le \log n\! - \int _{1.5}^{n+1/2}\log x dx \le \sum _{k=2}^{n} \frac{4\app{g}{2}}{k^2} \le \paren{
+          -1 + \sum _{k=1}^{\infty} \frac{1}{k^2}
+        }4\app{g}{2} = 2\paren{
+          \frac{\pi^2}{6} - 1
+        }\app{\ln}{\frac{432e^{2}}{3125}}  \approx 0.02739
+      });
+    >
   >
   +section{(2.7)}<
     +pn{
