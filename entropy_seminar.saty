@@ -6,7 +6,13 @@
 @require: annot
 @import: local
 
-let-inline \url url = {\href(url)(embed-string url);} in
+let-inline \url url = {\href(url)(embed-string url);} 
+let-inline ctx \greek it =
+  let ctx-greek = ctx
+    |> set-font Latin (`fonts-theano:TheanoOldStyle`, 1., 0.)
+    |> set-font OtherScript (`fonts-theano:TheanoOldStyle`, 1., 0.)
+  in
+    read-inline ctx-greek it in
 let-math \fract = math-char MathOp `fract` in
 document (|
   title = {エントロピーゼミ};
@@ -102,8 +108,8 @@ document (|
       }
       +pn{
         これをすごく整理すると ${
-          \app{g}{n} = - n\app{\ln}{\frac{1+\frac{1}{2n}}{1-\frac{1}{2n}} }-\frac{1}{2}\app{\ln}{1-\frac{1}{4n^{2}}}+1
-        } と書けて、${\app{\ln}{1+x}}の級数展開でバラしてやるとこれは
+          \app{g}{n} = - n\app{\log}{\frac{1+\frac{1}{2n}}{1-\frac{1}{2n}} }-\frac{1}{2}\app{\log}{1-\frac{1}{4n^{2}}}+1
+        } と書けて、${\app{\log}{1+x}}の級数展開でバラしてやるとこれは
       }
       +math(${
           \sum _{k=1}^{\infty}\frac{
@@ -119,7 +125,7 @@ document (|
 %        ことがどうせ高校範囲で示せて\footnote{
 %          実際にやってみると、${
 %            \paren{x^2\app{g}{x}}' = -x\paren{
-%              -3+3x\app{\ln}{\frac{2x+1}{2x-1}}+\app{\ln}{1-\frac{1}{4x^{2}}}
+%              -3+3x\app{\log}{\frac{2x+1}{2x-1}}+\app{\log}{1-\frac{1}{4x^{2}}}
 %            }
 %          }
 %        }、
@@ -133,7 +139,7 @@ document (|
           -1 + \sum _{k=1}^{\infty} \frac{1}{k^2}
         }4\app{g}{2} = 2\paren{
           \frac{\pi^2}{6} - 1
-        }\app{\ln}{\frac{432e^{2}}{3125}}  \approx 0.02739
+        }\app{\log}{\frac{432e^{2}}{3125}}  \approx 0.02739
       });
     >
   >
@@ -300,5 +306,183 @@ document (|
       }
     >
    
+  >
+  +section{(3.1)} <
+    +pn{
+      もしボルツマン定数 ${k_B = 1.380649 \cross 10^{-23} \mathrm{J}/\mathrm{K}}（定義値）で温度を表す習慣になっていたら、（気）温を表すのにはジュールにどのような接頭辞をつけていただろうか？という問題。室温はだいたい${300 \mathrm{K}} ぐらいであるため、だいたい ${4 \cross 10^{-21} \mathrm{J}} である。21を3で割ると7で、7は古典ギリシャ語で\greek{ἑπτά} (heptá)であるのだからこれは4ゼプトジュール。
+    }
+  >
+  +section{(3.7)} <
+    +pn{
+      単原子分子であるヘリウムと、二原子分子である水素をともに理想気体として近似し、二種の混合気体について考える問題。粒子数が${N}の単原子分子理想気体について ${\app{\Omega _1}{E_1} \propto E_1^{3N/2}} であることはすでに示している。そして実は（常識的な温度においては） ${\app{\Omega _2}{E_2} \propto E_2^{5N/2}} であることが知られている（この話は間接的には高校物理でも出てくる）。
+    }
+    +subsection{(a)} <
+      +pn{
+        系1がエネルギー ${E_1} であるような確率密度\footnote{
+          よく使われる表現だが、慣れていない人にとって誤解を招きやすい気もするのでもう少しひらいて書くと、「エネルギーが ${E_1} と ${E_1 + \Delta E} の間に存在する確率がだいたい ${\app{\rho}{E_1} \Delta E}である。${\Delta E}がゼロに近づくほどこの近似が良くなる」というような代物として考えられる確率密度関数、という感じの意味である。
+        } ${\app{\rho}{E_1} = \frac{
+          \app{\Omega _1}{E_1} \app{\Omega _2}{E - E_1}
+        }{
+          \app{\Omega}{E} 
+        }} を求めよ\footnote{
+          問題文には一言も書いてないが、総エネルギーを${E}と固定して問題を解くという話である。
+        }、という問題。ついでに確率密度を最大にするような${E_1}である${E_1^{\mathrm{max}}}も求めてほしいらしい。
+      }
+      +pn{
+        ということで計算する。まず ${\app{\Omega}{E}} というのは ${
+          \int_{0}^{E} \app{\Omega _1}{E_a} \app{\Omega _2}{E - E_a} \mathrm{d}E_a
+        } \footnote{つまり、${0 \le E_a \le E} の間を ${E_a} が動いたとき、それぞれの ${E_a}において、「気体1がエネルギー${E_a}を持ったときの状態数 × 気体2が残りのエネルギーを持ったときの状態数」を計算し、最後にそれを全部連続的に足す、つまり積分したもの、みたいに把握しておけば良い}であるわけで、題意よりこれは ${
+          \int_{0}^{E} E_a^{3N/2} \paren{E - E_a}^{5N/2} \mathrm{d}E_a
+        }である。これを真面目に計算するのは大変そうだが、大学入試でお世話になった人も多いであろう「1/6公式」
+      }
+
+      +math(${
+        \int_{\alpha}^{\beta} \paren{x-\alpha}\paren{\beta -x} dx = \frac{1}{6}\paren{\beta - \alpha}^3
+      });
+
+      +pn{
+        の一般化である「第1種オイラー積分」
+      }
+
+      +math(${
+        \int_{\alpha}^{\beta} \paren{x-\alpha}^m\paren{\beta -x}^n dx = \frac{m\! n\!}{\paren{m+n+1}\!}\paren{\beta - \alpha}^{m+n+1}
+      });
+
+      +pn{
+        がそのまま当てはまり、${
+          \app{\Omega}{E} = \frac{\paren{3N/2}\! \paren{5N/2}\!}{\paren{1+4N}\!}E^{1+4N}
+        } とあっけなく求まる。ということで
+      }
+
+      +math(${
+        \app{\rho}{E_1} = \frac{
+          \app{\Omega _1}{E_1} \app{\Omega _2}{E - E_1}
+        }{
+          \app{\Omega}{E} 
+        } = \frac{
+          E_1^{3N/2} \paren{E - E_1}^{5N/2} 
+        }{
+          \frac{\paren{3N/2}\! \paren{5N/2}\!}{\paren{1+4N}\!}E^{1+4N}
+        } 
+      });
+      +math(${
+        = \frac{\paren{1+4N}\!}{\paren{3N/2}\! \paren{5N/2}\!}\frac{1}{E} \paren{
+          \frac{E_1}{E}
+        }^{3N/2} \paren{
+          1 - \frac{E_1}{E}
+        }^{5N/2}
+      });
+
+      +pn{
+        と求まった\footnote{
+          ここで ${\frac{1}{E}} の因子が出てきているが、それは当然のことである。先程述べたように、確率密度というのは「エネルギーが ${E_1} と ${E_1 + \Delta E} の間に存在する確率がだいたい ${\app{\rho}{E_1} \Delta E}である。${\Delta E}がゼロに近づくほどこの近似が良くなる」という代物なのだから、確率密度は${\Delta E} を掛け算して無次元量になるようであってほしいわけである。
+        }。
+      }
+      +pn{
+        「ついでに確率密度を最大にするような${E_1}である${E_1^{\mathrm{max}}}も求めてほしい」と言われているのでそれも。とりあえず入力がめんどいので ${\eta = E_1 / E}、 ${\alpha = \frac{\paren{1+4N}\!}{\paren{3N/2}\! \paren{5N/2}\!}\frac{1}{E}} と置いてやると ${\app{\rho}{E\eta} = \alpha \eta^{3N/2} \paren{1-\eta}^{5N/2}}、右辺を${\eta}で微分すれば 
+
+        \align[
+          ${| \frac{\mathrm{d}}{\mathrm{d}\eta} \app{\rho}{E\eta} |= \alpha \paren{\eta^{3N/2}}' \paren{1-\eta}^{5N/2} + \alpha \paren{\eta^{3N/2}} \paren{\paren{1-\eta}^{5N/2}}'  |};
+          ${| |= 
+              \alpha \paren{\frac{3N}{2}\eta^{\frac{3N}{2} - 1}} \paren{1-\eta}^{5N/2} + \alpha \paren{\eta^{3N/2}} \paren{-\frac{5N}{2} \paren{1-\eta}^{\frac{5N}{2}-1}}
+           |};
+          ${| 
+            |= \alpha \eta^{3N/2} \paren{1-\eta}^{5N/2}
+                \paren{\frac{3N}{2\eta} - \frac{5N}{2\paren{1-\eta}} }
+          |};
+        ];%
+      }
+      +pn{
+        ${\frac{3N}{2\eta} - \frac{5N}{2\paren{1-\eta}} } が ${0} になるのは ${3\paren{1-\eta} = 5\eta }、つまり ${3 = 8\eta} であるときなので、 ${E_1^{\mathrm{max}} = \frac{3}{8}E} といえる。
+      }
+      
+    >
+    +subsection{(b)} <
+      +pn{
+        今求めた ${\app{\rho}{E_1}} をガウシアンで近似しろ、という問題。ガウシアンというのは指数関数の肩に二次関数が載っている形なので、${\app{\rho}{E_1}}の対数をテイラー展開して高次の項を落としてやることで近似ができそうである。${\eta = \frac{3}{8}} で最大になるのだから、そこを中心にテイラー展開をしたいので、 ${\epsilon = \eta - \frac{3}{8}} としておく。
+        \align[
+          ${
+            | \app{\log}{\app{\rho}{E\eta}} |= \log\alpha + \frac{3N}{2}\log \eta +\frac{5N}{2}\log \paren{1-\eta}
+          |};
+          ${
+            |  |= \log\alpha + \frac{3N}{2}\log \paren{\frac{3}{8}+\epsilon} +\frac{5N}{2}\log \paren{\frac{5}{8}-\epsilon}
+          |};
+          ${
+            |  |= \paren{\log\alpha + \frac{3N}{2}\log \frac{3}{8}  +\frac{5N}{2}\log \frac{5}{8} }  + \frac{3N}{2}\log \paren{1+\frac{8\epsilon}{3}} +\frac{5N}{2}\log \paren{1-\frac{8\epsilon}{5}}
+          |};
+          ${
+            |  |\approx \paren{\log\alpha + \frac{3N}{2}\log \frac{3}{8}  +\frac{5N}{2}\log \frac{5}{8} }  + \frac{3N}{2}\paren{
+              \frac{8\epsilon}{3} - \frac{1}{2}\paren{\frac{8\epsilon}{3}}^2
+            } +\frac{5N}{2}\paren{
+              -\frac{8\epsilon}{5} - \frac{1}{2}\paren{\frac{8\epsilon}{5}}^2
+            }
+          |};
+          ${
+            |  | = \paren{\log\alpha + \frac{3N}{2}\log \frac{3}{8}  +\frac{5N}{2}\log \frac{5}{8} }  + \frac{N}{2}\paren{
+              8\epsilon - \frac{32\epsilon^2}{3}
+            } +\frac{N}{2}\paren{
+              -8\epsilon - \frac{32\epsilon^2}{5}
+            }
+          |};
+          ${
+            |  | = \paren{\log\alpha + \frac{3N}{2}\log \frac{3}{8}  +\frac{5N}{2}\log \frac{5}{8} }  + \frac{32N\epsilon^2}{2}\paren{
+              - \frac{1}{3}
+            
+              - \frac{1}{5}
+            }
+          |}
+          ;
+          ${
+            |  | = \paren{\log\alpha + \frac{3N}{2}\log \frac{3}{8}  +\frac{5N}{2}\log \frac{5}{8} }  - \frac{128}{15}N\epsilon^2
+              
+            
+          |}
+        ];%
+
+        一応定数項も計算しておくか。
+
+        \align[
+          ${
+            |  |
+            \app{\log}{\paren{4N}\!} - \app{\log}{\paren{3N/2}\!}  - \app{\log}{\paren{5N/2}\!} + \frac{3N}{2}\log \frac{3}{8}  +\frac{5N}{2}\log \frac{5}{8} + \app{\log}{1+4N} - \log E
+          |};
+          ${|  | \approx 4N\app{\log}{4N} - 4N + \frac{1}{2}\app{\log}{8\pi N} |};
+          ${|  | - \frac{3N}{2} \app{\log}{3N/2} + \frac{3N}{2} - \frac{1}{2}\app{\log}{3\pi N} |};
+          ${|  | - \frac{5N}{2} \app{\log}{5N/2} + \frac{5N}{2} - \frac{1}{2}\app{\log}{5\pi N} |};
+          ${|  | + \frac{3N}{2}\log \frac{3}{8}  +\frac{5N}{2}\log \frac{5}{8} + \app{\log}{1+4N} - \log E
+          |};
+        ];
+        ${\log N} より速く増大する項はすべて打ち消し合い、結果として定数項は 
+      }
+        +math(${
+          \frac{1}{2}\app{\log}{\frac{8\pi N}{3\pi N \cdot 5 \pi N}} + \app{\log}{1+4N} - \log E
+          = \log\sqrt{\frac{8\paren{1+4N}^2}{15\pi NE^2}}
+        }); 
+      +pn{
+          となる。
+      }
+      +pn{
+        ということで、以上をまとめると、${\app{\log}{\app{\rho}{E\eta}} \approx \log\sqrt{\frac{8\paren{1+4N}^2}{15\pi NE^2}} - \frac{128}{15}N\paren{\eta - \frac{3}{8}}^2} であり、
+      }
+      +math (${
+       \app{\rho}{E_1} \approx \sqrt{\frac{128N^2}{15\pi NE^2} } \app{\exp}{- \frac{128}{15}N\paren{\frac{E_1}{E} - \frac{3}{8}}^2}
+       =\frac{1}{\sqrt{2\pi}\sqrt{\frac{15E^2}{256N} }} \app{\exp}{- \frac{\paren{E_1 - \frac{3E}{8}}^2}{
+         2 \cdot \frac{15}{256}\frac{E^2}{N}
+        }}
+      });
+
+      +pn{
+        と、平均 ${\frac{3E}{8}} で分散 ${\frac{15E^2}{256N}} とする正規分布で近似できることが分かった。\footnote{
+          定数項の計算めっちゃ面倒でしたね。ということで、（本の本文にあるように）定数項は捨てて計算し、あとで正規化された確率密度分布になるように（というか正規分布の形になるように）定数項の辻褄を合わせるのが普通です。
+        }
+      }
+      +pn{
+        ここから取り出せる物理学的に有意義な量としては、平均エネルギー${\angle-bracket{E_1} = \frac{3E}{8}}、一粒子あたりの「エネルギーの揺らぎ」${\frac{\sqrt{
+          \angle-bracket{\paren{E_1 - E_1^\mathrm{max}}^2}
+        }}{N} = \frac{1}{N}\sqrt{\frac{15}{256}\frac{E^2}{N}}
+        = \frac{3E}{8N}\sqrt{\frac{5}{12N}} = \angle-bracket{\frac{E_1}{N}}\sqrt{\frac{5}{12N}}
+        } などがある。
+      }
+    >
   >
 >
