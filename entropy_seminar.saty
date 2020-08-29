@@ -14,6 +14,7 @@ let-inline ctx \greek it =
   in
     read-inline ctx-greek it in
 let-math \fract = math-char MathOp `fract` in
+let-math \substitution  = math-paren Math.empty-paren Math.bar-middle in
 document (|
   title = {エントロピーゼミ};
   author = {hsjoihs};
@@ -482,6 +483,113 @@ document (|
         }}{N} = \frac{1}{N}\sqrt{\frac{15}{256}\frac{E^2}{N}}
         = \frac{3E}{8N}\sqrt{\frac{5}{12N}} = \angle-bracket{\frac{E_1}{N}}\sqrt{\frac{5}{12N}}
         } などがある。
+      }
+    >
+  >
+  +section{(3.8)} <
+    +pn{
+      本文 (3.28)（脚注にあった計算なので読み合わせでは飛ばしている）によると、
+      系が系1と系2から成り立っていて系1にはエネルギー${E_1}、系2にはエネルギー${E_2 = E - E_1}があるという状況においては、
+      ${E_1}の確率密度分布はガウシアンで、その分散は ${
+        \sigma_{E_1}^2 = -\frac{k_B}{\frac{\partial^2 S_1}{\partial E_1^2} + \frac{\partial^2 S_2}{\partial E_2^2}} 
+      } であるらしい。\footnote{
+        念のためさっきの(3.7)の問題がこれで解けることを確認しておく。
+        ${\app{\Omega _1}{E_1} \propto E_1^{3N/2}} なので対数取ってボルツマン定数掛けて ${\app{S_1}{E_1} = \frac{3N}{2}k_B \log E_1 }であって、 ${\app{\Omega _2}{E_2} \propto E_2^{5N/2}} なので ${\app{S_2}{E_2} = \frac{5N}{2}k_B \log E_2} となる。 ${\frac{\partial^2 S_1}{\partial E_1^2} = \frac{3N}{2}k_B \frac{\partial\paren{1/E_1}}{\partial E_1} = -\frac{3N}{2}k_B \frac{1}{E_1^2}}、同様に${\frac{\partial^2 S_2}{\partial E_2^2} = -\frac{5N}{2}k_B \frac{1}{E_2^2}} なので結果として ${
+          \sigma _{E_1}^2 = -\frac{k_B}{-\frac{3N}{2}k_B \frac{1}{E_1^2} -\frac{5N}{2}k_B \frac{1}{E_2^2}}
+          = \frac{1}{\frac{3N}{2} \frac{64}{9E^2} +\frac{5N}{2} \frac{64}{25E^2}} 
+          = \frac{1}{N \frac{32}{3E^2} +N \frac{32}{5E^2}} 
+          = \frac{1}{N \frac{32}{E^2} \frac{8}{15} }
+          = \frac{15E^2}{256N} 
+        }。わぁかんたん。
+      }
+    }
+    +subsection{(a)} <
+      +pn{
+        ${c_v}を粒子あたりの定積比熱 ${c_v = \frac{1}{N}\substitution{\frac{\partial E}{\partial T}}_{V,N}} としたとき、
+        ${
+        \frac{1}{k_B}\substitution{\frac{\partial^2 S}{\partial E^2}}_{V,N} = -\frac{1}{k_B T}\frac{1}{Nc_v T}
+      }
+      }
+      +pn{
+        を示せという問題。
+      }
+      +pn{
+        まず温度の定義より ${
+          \substitution{\frac{\partial S}{\partial E}}_{V,N} = \frac{1}{T}
+        } であるので 
+        \align[
+          ${
+            | \frac{1}{k_B}\substitution{\frac{\partial^2 S}{\partial E^2}}_{V,N} 
+            |= \frac{1}{k_B}\substitution{\frac{\partial \paren{1/T}}{\partial E}}_{V,N}
+            = \frac{1}{k_B}\paren{-\frac{1}{T^2}}\substitution{\frac{\partial T}{\partial E}}_{V,N}
+            
+          |};
+          ${|| 
+            = -\frac{1}{k_B T^2 \substitution{\frac{\partial E}{\partial T}}_{V,N}}
+            = -\frac{1}{k_B T^2 Nc_v}
+          |}
+        ];
+        ということで示された。
+      }
+    >
+    +subsection{(a) 補足} <
+      +pn{
+        計算自体は簡単だったが（というかほぼ定義を組み合わせるだけ）、これにはどのような物理学的解釈を与えることができるのだろうか。
+        この答えは丁寧にも問題文に書いてある。${\frac{1}{k_B T}\frac{1}{Nc_v T}} とあるが、
+        ${Nc_v T}というのはだいたい絶対零度から${T}まで系の温度をあげるのに必要なエネルギーであり（特に${c_v}が温度に依存しなければ厳密にそう）
+        系全体が持っているエネルギーぐらいの大きさの量である。
+        一方で${k_B T}というのはそれぞれの分子が持っているエネルギーぐらいの大きさの量である。
+      }
+      +pn{
+         ${-\frac{1}{k_B}\frac{\partial^2 S}{\partial E^2}} の逆数というのはエネルギーのゆらぎ幅の2乗ぐらいであるのだから、
+         ${\sqrt{Nc_v T \cdot k_B T}} というのはエネルギーのゆらぎ幅ぐらいであり、
+         つまりエネルギーのゆらぎ幅は${Nc_v T}と ${k_B T}の相乗平均みたいな振る舞いをする。
+         つまり、一粒子あたりのエネルギーの ${\sqrt{N}} 倍オーダー。
+      }
+      +pn{
+        これを${N}で割ると、一粒子あたりの「エネルギーの揺らぎ」は一粒子あたりのエネルギーの${1/\sqrt{N}} 倍オーダー。
+      }
+      +pn{
+        このような視点で見てみると、これって応答（系をこれぐらい変化させるには外部からどれくらいのことをしなければならないか。今回は比熱。）と
+        揺らぎとの間に式が成り立っているということであってすごい。これを「揺動応答関係」と呼ぶらしい。
+      }
+    >
+    +subsection{(b)} <
+      +pn{
+        系が粒子数${N}の系1と粒子数${N}の系2から成り立っていて、それぞれの比熱が ${c_v^{\paren{1}}} と ${c_v^{\paren{2}}} であるとき、
+      }
+      +math(${
+        \frac{1}{c_v^{\paren{1}}} + \frac{1}{c_v^{\paren{2}}} = \frac{Nk_BT^2}{\sigma _{E_1}^{2}}
+      });
+
+      +pn{
+        であることを示せ、という問題。まあこれもそのままで、さっき示した
+        ${
+          \frac{1}{k_B}\frac{\partial^2 S}{\partial E^2} = -\frac{1}{k_B T}\frac{1}{Nc_v T}
+        }
+        から
+      }
+
+      +math(${
+        -NT^2 \frac{\partial^2 S_1}{\partial E_1^2} = \frac{1}{c_v^{\paren{1}}}
+      });
+      +math(${
+        -NT^2 \frac{\partial^2 S_2}{\partial E_2^2} = \frac{1}{c_v^{\paren{2}}}
+      });
+
+      +pn{
+        が出るので、こいつを足せば
+      }
+
+      +math (${
+        \frac{1}{c_v^{\paren{1}}} + \frac{1}{c_v^{\paren{2}}} =  -NT^2 \paren{
+          \frac{\partial^2 S_1}{\partial E_1^2} + \frac{\partial^2 S_2}{\partial E_2^2}
+        } =  -NT^2 \paren{
+          -\frac{k_B}{\sigma _{E_1}^2} 
+        }
+      });
+      +pn{
+        で一件落着。
       }
     >
   >
