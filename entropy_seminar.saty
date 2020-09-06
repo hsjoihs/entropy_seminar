@@ -23,7 +23,16 @@ document (|
 |) '<
   +section{はじめに}<
     +pn{
-      およそこういうpdfというのは、書かれた文脈から切り離されて電子の海をなんか漂ったり漂わなかったりするものである。ということで最低限の文脈をファイル内に収めておいたほうがよい。以下はJames P. Sethna の Statistical Mechanics: Entropy, Order Parameters And Complexity （ 2020年8月18日現在 \url(`http://pages.physics.cornell.edu/~sethna/StatMech/EntropyOrderParametersComplexity.pdf`); に存在する）第一版の演習題をhsjoihsが解いたり解かなかったり補足したりしたものである。演習題の原文を見ながら読むことが想定されているが、一応このpdfだけで最低限の文脈は追うことができるように書こうと意図はしている。
+      およそこういうpdfというのは、書かれた文脈から切り離されて電子の海をなんか漂ったり漂わなかったりするものである。
+      ということで最低限の文脈をファイル内に収めておいたほうがよい。
+      以下はJames P. Sethna の Statistical Mechanics: Entropy, Order Parameters And Complexity 
+      （ 2020年8月18日現在 \url(`http://pages.physics.cornell.edu/~sethna/StatMech/EntropyOrderParametersComplexity.pdf`); 
+      に存在する）第一版の演習題をhsjoihsが解いたり解かなかったり補足したりしたものである。
+      演習題の原文を見ながら読むことが想定されているが、一応このpdfだけで最低限の文脈は追うことができるように書こうと意図はしている。
+    }
+    +pn{
+      ところで、${n}が非負整数のときにしか${n\!}という便利な記号が使えないのは不便なので、
+      このpdfでは${x\! }はオイラーのガンマ関数${\Gamma}を使って${\app{\Gamma}{x+1}}と定義されるものとする。
     }
   >
   +section{(1.1)}<
@@ -409,6 +418,221 @@ document (|
         ${T}は示強変数（同じ系を2つ持ってきてくっつけても変わらない）、${E}と${S}は示量変数（同じ系を2つ持ってきてくっつけると2倍）。
         一方${\Omega}は同じ系を2つ持ってきてくっつけると2乗になる量であり、
         系が大きくなるにつれて示強変数（増えない）・示量変数（2倍に増える）よりも遥かに速く増える。
+      }
+    >
+  >
+  +section{(3.5)} <
+    +pn{
+      理想気体はやっぱり理想なので、現実に近づけるべく、原子に非ゼロ\footnote{
+        物理屋さんの方言で、非ゼロのことを「有限」ということがある。開区間 ${e^\paren{-\infty, \infty}} というニュアンスで捉えていただきたい。
+      }の大きさを与え、原子同士が重なることを禁止する。3次元はちょっと絵に書きにくいので2次元でやる。${L \cross L}の大きさの硬い\footnote{
+        「硬い(hard)」というのは、ここでは一切の侵入を禁じるという意味。
+        また、変形したりしないというニュアンスもあり、このニュアンスを出したいときには「剛体」とも訳出する。
+      }箱の中に、${N}枚の半径${r}の硬い円盤があるものとする。それぞれの気体分子の半径は箱の幅より顕著に小さく（${r \ll L}）、
+      気体分子全体の占める面積は箱の面積より顕著に小さい（${N\pi r^2 \ll L^2}）とする。
+    }
+    +subsection{(a)} <
+      +pn{
+        箱の中に1つ目の気体分子を置くとき、円の中心が存在できる領域の面積は${\paren{L-2r}^2}である\footnote{
+          壁から${r}未満の距離のところに円の中心が存在すると壁にめり込んでしまうから。
+        }。2つ目の気体分子を置くとき、その円の中心が存在できる領域の面積は、
+        かなり高い確率で${\paren{L-2r}^2 - \pi \paren{2r}^2}である\footnote{
+          1つ目の気体分子の中心から${2r}以上離れていないと円どうしが重なってしまう。
+          「かなり高い確率で」と言っているのは、最初の円がたまたまかなり壁に近い場合に場合分けが生じるからである。
+          でもそもそもこの剛体球モデル自体がだいぶ荒っぽい近似だし、低確率だし、真面目に考えなくていいのでは？いいよ！
+        }。ということで、位置に関しての状態空間の広さは、${A = \paren{L-2r}^2}、${a = \pi \paren{2r}^2} とおいてやれば
+        だいたい ${A \paren{A-a} \paren{A-2a} \cdots \paren{A-\paren{N-1}a}}、と思いきや同種粒子が ${N}個あるので${1/N\!}が要る。
+        ということで${\frac{
+          A \paren{A-a} \paren{A-2a} \cdots \paren{A-\paren{N-1}a}
+        }{
+          N\!
+        }}。
+      }
+    >
+    +subsection{(b)} <
+      +pn{
+        位置の自由度に対するエントロピーを求める。状態空間の広さの対数にボルツマン定数を掛けてやるのだから、
+        \align[${
+          |S|=k_B\app{\log}{
+            \frac{
+              A \paren{A-a} \paren{A-2a} \cdots \paren{A-\paren{N-1}a}
+            }{
+              N\!
+            }
+          }
+        |};
+        ${
+          | |= k_B\paren{
+            N\log a +
+            \app{\log}{
+              \frac{
+                \frac{A}{a} \paren{\frac{A}{a}-1} \paren{\frac{A}{a}-2} \cdots \paren{\frac{A}{a}-\paren{N-1}}
+              }{
+                N\!
+              }
+            }
+          }
+        |};
+        ${
+          | |= k_B\paren{
+            N\log a +
+            \app{\log}{\paren{\frac{A}{a}}\!}
+            - \app{\log}{\paren{\frac{A}{a} - N}\!}
+            - \app{\log}{N\!}
+          }
+        |};
+        ${
+          | | \approx k_B\paren{
+            N\log a + \frac{A}{a}\log \frac{A}{a}  
+            -\paren{\frac{A}{a} - N}\app{\log}{\frac{A}{a} - N} 
+            
+            -N\log N + \frac{1}{2}\app{\log}{\frac{
+               \frac{A}{a}
+            }{
+              2\pi N \paren{\frac{A}{a} - N}
+            }}
+          }
+        |}];
+        ところで、${N\pi r^2 \ll \paren{L - 2r}^2} なのだから ${\frac{Na}{4} \ll A} である。
+        ということで ${\epsilon} を ${\frac{Na}{A}} と定義するとこれは${1}より顕著に小さく、
+        \align[${
+          |S|\approx k_B\paren{
+            N\log a + \frac{N}{\epsilon}\log \frac{N}{\epsilon}  
+            -\paren{\frac{N}{\epsilon} - N}\app{\log}{\frac{N}{\epsilon} - N} 
+            
+            -N\log N + \frac{1}{2}\app{\log}{\frac{
+               \frac{N}{\epsilon}
+            }{
+              2\pi N \paren{\frac{N}{\epsilon} - N}
+            }}
+          }
+        |};${
+          | |= Nk_B\paren{
+            \log a + \frac{1}{\epsilon}\log \frac{N}{\epsilon} 
+            -\paren{\frac{1}{\epsilon} - 1}\app{\log}{\frac{N}{\epsilon} - N} 
+            
+            -\log N  + \frac{1}{2N}\app{\log}{\frac{
+               \frac{1}{\epsilon}
+            }{
+              2\pi  \paren{\frac{N}{\epsilon} - N}
+            }}
+          }
+        |};${
+          | |= Nk_B\paren{
+            \log a + \frac{1}{\epsilon}\log \frac{\frac{N}{\epsilon}}{
+              \frac{N}{\epsilon} - N
+            }
+            +\app{\log}{\frac{N}{\epsilon} - N} 
+            
+            -\log N + \frac{1}{2N}\app{\log}{\frac{
+               1
+            }{
+              2\pi N \paren{1 - \epsilon}
+            }}
+          }
+        |};${
+          | |= Nk_B\paren{
+            \log a + \frac{1}{\epsilon}\log \frac{1}{
+             1 - \epsilon
+            }
+            +\app{\log}{\frac{1}{\epsilon} - 1} 
+            - \frac{1}{2N}\app{\log}{
+              2\pi N \paren{1 - \epsilon}
+            }
+          }
+        |};${
+          | |= Nk_B\paren{
+            \log \frac{a}{\epsilon} - \frac{1}{\epsilon}\log \paren{
+             1 - \epsilon
+            }
+            +\app{\log}{1 - \epsilon} 
+            - \frac{1}{2N}\app{\log}{
+              2\pi N \paren{1 - \epsilon}
+            }
+          }
+        |};${
+          | |= Nk_B\paren{
+            \log \frac{a}{\epsilon} +\paren{
+              - \frac{1}{\epsilon} + 1 - \frac{1}{2N}
+            }\log \paren{
+             1 - \epsilon
+            }
+            - \frac{\app{\log}{
+              2\pi N
+            } }{2N}
+          }
+        |}];
+        （こういう項の多くて長い式変形を見るとビビる人も多いと思いますが、追いやすくなるように工夫して書いているので頑張って追ってね）
+      }
+      +pn{
+        さてここで ${
+          \paren{
+            - \frac{1}{\epsilon} + 1 - \frac{1}{2N}
+          }\log \paren{
+            1 - \epsilon
+          }
+        } を調べる。${\frac{1}{\epsilon}}は大きくて、${1}は普通で、${\frac{1}{2N}}はめちゃめちゃ小さい。
+        ということで${\frac{1}{2N}}だけ捨てて、${\log \paren{
+            1 - \epsilon
+          }} をテイラー展開して ${-\epsilon - \frac{\epsilon^2}{2} + \app{O}{\epsilon^3}} として計算してやると、調べたい式 ${
+          \paren{
+            - \frac{1}{\epsilon} + 1 - \frac{1}{2N}
+          }\log \paren{
+            1 - \epsilon
+          }
+        } は${1 - \frac{\epsilon}{2} + \app{O}{\epsilon^2}}
+        と書ける。さらに ${\app{\log}{1 - \frac{\epsilon}{2}} = - \frac{\epsilon}{2} + \app{O}{\epsilon^2}} であるので、結果として
+        調べたかった式は ${1 + \app{\log}{1 - \frac{\epsilon}{2}} + \app{O}{\epsilon^2}} と書ける。
+      } 
+      +pn{
+        これを元の式に代入してやると
+        \align[${
+          | S|\approx Nk_B\paren{
+            \log \frac{a}{\epsilon} + 1 + \app{\log}{1 - \frac{\epsilon}{2}} + \app{O}{\epsilon^2}
+            - \frac{\app{\log}{
+              2\pi N
+            } }{2N}
+          }
+        |};${
+          | |\approx Nk_B\paren{
+            1 + \log\sqbracket{ \frac{a}{\epsilon} \paren{1 - \frac{\epsilon}{2}}}
+          }
+        |};${
+          | |\approx Nk_B\paren{
+            1 + \log\paren{ \frac{a}{\epsilon}  - \frac{a}{2}}
+          }
+        |};${
+          | |\approx Nk_B\paren{
+            1 + \log\paren{ \frac{A}{N}  - \frac{a}{2}}
+          }
+        |}];
+        これは、粒子間の衝突を考えなければそれぞれの粒子は粒子あたりの面積${\frac{A}{N}} ぐらいの「自由さ」を享受できていたが、
+        他の粒子に邪魔されて実質的に${\frac{a}{2} = 2\pi r^2}（円二枚分の面積）だけ享受できる自由が減った、と言語化してやることができる。
+      }
+    >
+    +subsection{(c)} <
+      +pn{
+        圧力を求める問題。今までのは運動量の分の自由度を無視していたのでそれを足してエントロピーを求める。
+        ${2N - 1}次元球面の表面積をもとめてえいえいとやるのだが、めんどいので手を抜く。三次元のときに${
+          \frac{3}{2}Nk_B + Nk_B\log\sqbracket{\frac{1}{h^3} \paren{\frac{4\pi m E}{3N}}^{3/2}
+        }} だったのだからどうせ 
+      }
+      +math(${
+          \frac{2}{2}Nk_B + Nk_B\log\sqbracket{\frac{1}{h^2} \paren{\frac{4\pi m E}{2N}}^{2/2}
+        }
+          = Nk_B + Nk_B\log\sqbracket{\frac{1}{h^2} \paren{\frac{2\pi m E}{N}}
+        }} );
+      +pn{
+        を足せばいいのである。多分。
+      }
+      +pn{
+        ということで${
+          \app{S}{E, A, N} = 2Nk_B + Nk_B\log\sqbracket{
+            \frac{2\pi m E}{Nh^2}
+            \paren{ \frac{A}{N}  - b}
+          }
+        }であり、これを${E, N}固定して${A}で微分したものが${P/T}なので、${P =  \frac{Nk_B T}{A - Nb}} である。
+        ${b}が${0}なら理想気体の状態方程式です。はい。
       }
     >
   >
